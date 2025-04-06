@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import { typeDefs, resolvers } from './schemas/index.js';
 import { authenticateToken } from './services/auth.js';
-import cors from 'cors';
+
 
 dotenv.config();
 
@@ -23,12 +23,6 @@ mongoose.connect(mongoURI!)
     console.error('Error connecting to MongoDB:', err);
   });
 
-const corsOptions = {
-  origin: ['https://graphibooks.onrender.com'],
-  credentials: true,
-};
-
-app.use(cors(corsOptions));
 
 const server = new ApolloServer({
   typeDefs,
@@ -40,7 +34,6 @@ const startServer = async () => {
   await server.start();
   server.applyMiddleware({
     app: app as any,
-    cors: false,
   });
 
   app.use(express.urlencoded({ extended: true }));
